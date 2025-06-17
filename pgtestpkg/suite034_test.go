@@ -21,5 +21,6 @@ func (s *Suite034) TestFunc9()  {}
 func (s *Suite034) TestFunc10() {}
 
 func TestSuite034(t *testing.T) {
+	t.Parallel()
 	suite.Run(t, new(Suite034))
 }
