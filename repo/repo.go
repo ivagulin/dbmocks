@@ -433,7 +433,7 @@ func newGenericRepo(dialector gorm.Dialector) *Repo {
 	sqlDB.SetConnMaxLifetime(time.Hour)
 	sqlDB.SetConnMaxIdleTime(time.Minute)
 
-	err = migrateDB(sqlDB)
+	err = MigrateDB(sqlDB)
 	if err != nil {
 		slog.Error("unable to apply automigrate", "err", err)
 		os.Exit(1)
@@ -444,7 +444,7 @@ func newGenericRepo(dialector gorm.Dialector) *Repo {
 	}
 }
 
-func migrateDB(db *sql.DB) error {
+func MigrateDB(db *sql.DB) error {
 	migrationsSource := migrate.EmbedFileSystemMigrationSource{
 		FileSystem: migrations.FS,
 		Root:       "/",
