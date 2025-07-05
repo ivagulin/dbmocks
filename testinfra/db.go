@@ -6,6 +6,7 @@ import (
 	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/samber/lo"
 	"os"
+	"testing"
 )
 
 const ENV_NAME_DB_CONN_STR = "TEST_DB_CONN_STR"
@@ -19,16 +20,17 @@ type DB interface {
 	Close()
 }
 
-func MustStartDB() DB {
-	return lo.Must(StartDB())
+func MustStartDB(t *testing.T, useTmpfs bool) DB {
+	return lo.Must(StartDB(t, useTmpfs))
 }
 
-func StartDB() (DB, error) {
+func StartDB(t *testing.T, useTmpfs bool) (DB, error) {
+	t.TempDir()
 	connStr := os.Getenv(ENV_NAME_DB_CONN_STR)
 	if connStr != "" {
 		return newExternalDB(connStr)
 	}
-	return newContainerDB()
+	return newContainerDB(t, useTmpfs)
 }
 
 func applyMigrations(connCfg pgx.ConnConfig) error {

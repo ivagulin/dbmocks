@@ -1,4 +1,4 @@
-package pgtestpkg
+package testcontainers_tmpfs
 
 import (
 	"github.com/ivagulin/dbmocks/testinfra"
@@ -11,7 +11,7 @@ type SuiteBase struct {
 }
 
 func (s *SuiteBase) SetupSuite() {
-	s.gDB = testinfra.MustStartDB(s.T(), false)
+	s.gDB = testinfra.MustStartDB(s.T(), true)
 }
 
 func (s *SuiteBase) TearDownSuite() {
